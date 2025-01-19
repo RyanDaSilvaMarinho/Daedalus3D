@@ -1,3 +1,58 @@
-* {
-    padding: 0;margin: 0;
+/* Container de botões */
+div {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 100;
+    background-color: rgba(255, 255, 255, 0.9); /* Fundo branco com transparência */
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    gap: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
+}
+
+/* Estilo dos botões */
+button {
+    width: 60px; /* Largura do botão */
+    height: 60px; /* Altura do botão */
+    border: none;
+    border-radius: 8px;
+    background-size: contain; /* Ajusta o tamanho da imagem ao botão */
+    background-repeat: no-repeat; /* Evita repetição da imagem */
+    background-position: center; /* Centraliza a imagem */
+    cursor: pointer;
+    transition: transform 0.2s ease; /* Animação ao passar o mouse */
+}
+
+/* Efeito ao passar o mouse */
+button:hover {
+    transform: scale(1.1); /* Aumenta o botão levemente */
+}
+
+/* Estilo do botão selecionado */
+button.selected {
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.8); /* Destaque azul */
+}
+
+/* Botões específicos com imagens */
+button.cube {
+    background-image: url('https://www.pngfind.com/pngs/m/179-1790052_570-x-599-10-white-3d-cube-png.png');
+}
+
+button.sphere {
+    background-image: url('https://p7.hiclipart.com/preview/645/904/905/sphere-three-dimensional-space-drawing-grey-wallpaper.jpg');
+}
+
+button.cylinder {
+    background-image: url('https://www.nicepng.com/png/detail/23-238447_3d-cylinder-png.png');
+}
+
+/* Estilo do seletor de cor */
+#colorPicker {
+    width: 40px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
 }
