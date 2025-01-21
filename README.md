@@ -1,7 +1,3 @@
-# subdivideplane
-
-"How To Subdivide A Plane Into Even Squares In Three.js" YouTube tutorial project files https://youtu.be/oQbfy8QP8Lc
-
 1. Download repository
 2. Install Parcel by typing the following command: npm install parcel -g
 3. Make sure to install dependencies: open project in VSCode -> open command line -> type: npm install
