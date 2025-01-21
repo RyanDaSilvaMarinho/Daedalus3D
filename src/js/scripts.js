@@ -1,13 +1,12 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-// Configuração inicial do renderer e fundo branco
-const renderer = new THREE.WebGLRenderer();
+// Configuração inicial
+const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0xFFFFFF); // Define o fundo branco
+renderer.setClearColor(0x000000, 0);
 document.body.appendChild(renderer.domElement);
 
-// Cena, câmera e controle
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
@@ -32,8 +31,7 @@ const planeMesh = new THREE.Mesh(
 planeMesh.rotateX(-Math.PI / 2);
 scene.add(planeMesh);
 
-// Grade com cor preta
-const grid = new THREE.GridHelper(20, 20, 0x000000, 0x000000); // Linhas e divisões pretas
+const grid = new THREE.GridHelper(20, 20, 0x000000, 0x000000);
 scene.add(grid);
 
 const highlightMesh = new THREE.Mesh(
@@ -47,92 +45,175 @@ highlightMesh.rotateX(-Math.PI / 2);
 highlightMesh.position.set(0.5, 0, 0.5);
 scene.add(highlightMesh);
 
-// Variáveis para o raycaster e os objetos
+// Variáveis e objetos globais
 const mousePosition = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
 let intersects;
-
-// Tipo de objeto selecionado (padrão: cubo)
 let selectedObjectType = "cube";
+const objects = []; // Lista de objetos na cena
+let selectedObject = null; // Objeto atualmente selecionado para arrastar
+let isDragging = false; // Indica se o arrasto está em andamento
 
-// Função para criar diferentes tipos de objeto
+// Função para criar objetos com contorno
 function createObject(type, color) {
     let object, offsetY;
-    const material = new THREE.MeshBasicMaterial({ color }); // Usa a cor escolhida
+    const material = new THREE.MeshBasicMaterial({ color });
+
+    const outlineMaterial = new THREE.MeshBasicMaterial({
+        color: 0x000000,
+        side: THREE.BackSide,
+    });
+
+    const edgesMaterial = new THREE.LineBasicMaterial({
+        color: 0x000000,
+        linewidth: 1,
+    });
+
     switch (type) {
         case "cube":
             object = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), material);
             offsetY = 0.5;
+
+            const cubeOutline = new THREE.Mesh(
+                new THREE.BoxGeometry(1.1, 1.1, 1.1),
+                outlineMaterial
+            );
+            object.add(cubeOutline);
+
+            const cubeEdges = new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1, 1));
+            const cubeEdgesMesh = new THREE.LineSegments(cubeEdges, edgesMaterial);
+            object.add(cubeEdgesMesh);
             break;
+
         case "sphere":
             object = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), material);
             offsetY = 0.5;
+
+            const sphereOutline = new THREE.Mesh(
+                new THREE.SphereGeometry(0.55, 32, 32),
+                outlineMaterial
+            );
+            object.add(sphereOutline);
             break;
+
         case "cylinder":
             object = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 1, 32), material);
             offsetY = 0.5;
+
+            const cylinderOutline = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.55, 0.55, 1.1, 32),
+                outlineMaterial
+            );
+            object.add(cylinderOutline);
             break;
+
         default:
             return null;
     }
 
-    object.userData.offsetY = offsetY; // Armazenar o deslocamento no objeto
+    object.userData.offsetY = offsetY;
+    object.scale.set(0.1, 0.1, 0.1); // Define escala inicial para a animação
     return object;
 }
 
-// Eventos de movimento do mouse
-window.addEventListener("mousemove", function (e) {
+// Função para animar a escala de surgimento
+function animateScale(object) {
+    const scaleSpeed = 0.05; // Velocidade da animação
+    const targetScale = 1; // Escala final
+
+    function scaleUp() {
+        if (object.scale.x < targetScale) {
+            object.scale.x += scaleSpeed;
+            object.scale.y += scaleSpeed;
+            object.scale.z += scaleSpeed;
+            requestAnimationFrame(scaleUp);
+        } else {
+            object.scale.set(targetScale, targetScale, targetScale);
+        }
+    }
+    scaleUp();
+}
+
+// Função para criar e adicionar botões
+function createButton(type, parent) {
+    const button = document.createElement("button");
+    button.classList.add(type);
+    button.onclick = () => {
+        selectedObjectType = type;
+        document.querySelectorAll("button").forEach((btn) => btn.classList.remove("selected"));
+        button.classList.add("selected");
+    };
+    parent.appendChild(button);
+}
+
+window.addEventListener("mousedown", (e) => {
+    raycaster.setFromCamera(mousePosition, camera);
+    const intersectedObjects = raycaster.intersectObjects(objects);
+
+    if (intersectedObjects.length > 0) {
+        selectedObject = intersectedObjects[0].object;
+        isDragging = true;
+    } else if (intersects?.length > 0) {
+        const objectExist = objects.find(
+            (object) =>
+                object.position.x === highlightMesh.position.x &&
+                object.position.z === highlightMesh.position.z
+        );
+
+        if (!objectExist) {
+            // Captura a cor selecionada no colorPicker
+            const colorPicker = document.getElementById("colorPicker"); // Certifique-se de que o ID está correto
+            const selectedColor = colorPicker ? colorPicker.value : "#ff0000"; // Fallback para vermelho, caso o colorPicker não exista
+
+            const newObject = createObject(selectedObjectType, selectedColor);
+
+            if (newObject) {
+                newObject.position.copy(highlightMesh.position);
+                newObject.position.y += newObject.userData.offsetY;
+                scene.add(newObject);
+                objects.push(newObject);
+
+                // Animação de escala
+                animateScale(newObject);
+            }
+        }
+    }
+});
+
+// Evento para movimentar objetos
+window.addEventListener("mousemove", (e) => {
     mousePosition.x = (e.clientX / window.innerWidth) * 2 - 1;
     mousePosition.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
     raycaster.setFromCamera(mousePosition, camera);
     intersects = raycaster.intersectObject(planeMesh);
+
     if (intersects.length > 0) {
         const intersect = intersects[0];
         const highlightPos = new THREE.Vector3().copy(intersect.point).floor().addScalar(0.5);
         highlightMesh.position.set(highlightPos.x, 0, highlightPos.z);
 
-        const objectExist = objects.find(function (object) {
-            return (
-                object.position.x === highlightMesh.position.x &&
-                object.position.z === highlightMesh.position.z
+        if (isDragging && selectedObject) {
+            selectedObject.position.set(
+                highlightPos.x,
+                selectedObject.userData.offsetY,
+                highlightPos.z
             );
-        });
-
-        if (!objectExist) highlightMesh.material.color.setHex(0xffffff);
-        else highlightMesh.material.color.setHex(0xff0000);
-    }
-});
-
-// Lista de objetos na cena
-const objects = [];
-
-// Obter o seletor de cor
-const colorPicker = document.getElementById("colorPicker");
-
-// Evento de clique para adicionar objetos
-window.addEventListener("mousedown", function () {
-    const objectExist = objects.find(function (object) {
-        return (
-            object.position.x === highlightMesh.position.x &&
-            object.position.z === highlightMesh.position.z
-        );
-    });
-
-    if (!objectExist) {
-        if (intersects.length > 0) {
-            const selectedColor = colorPicker.value; // Obter a cor escolhida
-            const newObject = createObject(selectedObjectType, selectedColor);
-            if (newObject) {
-                newObject.position.copy(highlightMesh.position);
-                newObject.position.y += newObject.userData.offsetY; // Aplicar o deslocamento
-                scene.add(newObject);
-                objects.push(newObject);
-                highlightMesh.material.color.setHex(0xff0000);
-            }
         }
     }
-    console.log(scene.children.length);
 });
+
+// Soltar objetos ao soltar o botão do mouse
+window.addEventListener("mouseup", () => {
+    isDragging = false;
+    selectedObject = null;
+});
+
+// Configuração inicial dos botões
+const controlsContainer = document.getElementById("controls");
+createButton("cube", controlsContainer);
+createButton("sphere", controlsContainer);
+createButton("cylinder", controlsContainer);
 
 // Função de animação
 function animate() {
@@ -141,40 +222,9 @@ function animate() {
 
 renderer.setAnimationLoop(animate);
 
-// Ajuste da câmera ao redimensionar a janela
-window.addEventListener("resize", function () {
+// Redimensionar janela
+window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
-
-// Criar e estilizar os botões com imagens
-const controlsContainer = document.getElementById("controls");
-
-// Função para criar um botão
-function createButton(type, imagePath) {
-    const button = document.createElement("button");
-    button.classList.add(type); // Adiciona a classe correspondente
-    button.style.backgroundImage = `url('${imagePath}')`; // Define a imagem como fundo
-    button.style.backgroundSize = "contain"; // Ajusta o tamanho da imagem
-    button.style.backgroundRepeat = "no-repeat"; // Evita repetição
-    button.style.backgroundPosition = "center"; // Centraliza a imagem
-    button.style.width = "60px"; // Largura do botão
-    button.style.height = "60px"; // Altura do botão
-    button.style.border = "none";
-    button.style.cursor = "pointer";
-    button.style.margin = "5px";
-
-    button.onclick = () => {
-        selectedObjectType = type;
-        document.querySelectorAll("button").forEach((btn) => btn.classList.remove("selected"));
-        button.classList.add("selected");
-    };
-
-    return button;
-}
-
-// Adicionar os botões com imagens
-controlsContainer.appendChild(createButton("cube", "https://www.pngfind.com/pngs/m/179-1790052_570-x-599-10-white-3d-cube-png.png"));
-controlsContainer.appendChild(createButton("sphere", "https://p7.hiclipart.com/preview/645/904/905/sphere-three-dimensional-space-drawing-grey-wallpaper.jpg"));
-controlsContainer.appendChild(createButton("cylinder", "https://www.nicepng.com/png/detail/23-238447_3d-cylinder-png.png"));

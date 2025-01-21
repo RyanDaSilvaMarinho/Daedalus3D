@@ -1,53 +1,68 @@
 div {
   z-index: 100;
-  background-color: #ffffffe6;
-  border-radius: 8px;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  border: 2px solid #ffffff4d;
+  border-radius: 12px;
   gap: 10px;
   padding: 15px;
   display: flex;
   position: absolute;
   top: 10px;
   left: 10px;
-  box-shadow: 0 4px 6px #0000001a;
+  box-shadow: 0 6px 10px #00000040;
 }
 
 button {
   cursor: pointer;
+  background-color: #ff9a9e;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   width: 60px;
   height: 60px;
-  transition: transform .2s;
+  transition: transform .2s, box-shadow .2s, background-color .2s;
+  box-shadow: 0 4px 6px #0003;
 }
 
 button:hover {
+  background-color: #fad0c4;
   transform: scale(1.1);
+  box-shadow: 0 6px 12px #0000004d;
 }
 
 button.selected {
-  box-shadow: 0 0 10px #007bffcc;
+  border: 2px solid #ffd60acc;
+  box-shadow: 0 0 15px #ffd60acc;
 }
 
 button.cube {
-  background-image: url("https://www.pngfind.com/pngs/m/179-1790052_570-x-599-10-white-3d-cube-png.png");
+  background-image: url("cubo-remove.6f0c3351.png");
 }
 
 button.sphere {
-  background-image: url("https://p7.hiclipart.com/preview/645/904/905/sphere-three-dimensional-space-drawing-grey-wallpaper.jpg");
+  background-image: url("esfera-remove.28aa8547.png");
 }
 
 button.cylinder {
-  background-image: url("https://www.nicepng.com/png/detail/23-238447_3d-cylinder-png.png");
+  background-image: url("cilindro-remove.5d4b6720.png");
 }
 
 #colorPicker {
   cursor: pointer;
+  background: linear-gradient(135deg, #42a5f5, #478ed1);
   border: none;
-  border-radius: 8px;
+  border-radius: 50%;
   width: 40px;
   height: 40px;
+  transition: box-shadow .2s, transform .2s;
+  box-shadow: 0 4px 6px #0000004d;
+}
+
+#colorPicker:hover {
+  background: linear-gradient(135deg, #478ed1, #42a5f5);
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px #0006;
 }
 /*# sourceMappingURL=index.77a9bc14.css.map */

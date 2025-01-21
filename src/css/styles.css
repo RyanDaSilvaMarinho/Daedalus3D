@@ -1,58 +1,67 @@
-/* Container de botões */
 div {
     position: absolute;
     top: 10px;
     left: 10px;
     z-index: 100;
-    background-color: rgba(255, 255, 255, 0.9); /* Fundo branco com transparência */
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 12px;
     display: flex;
     gap: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Estilo dos botões */
 button {
-    width: 60px; /* Largura do botão */
-    height: 60px; /* Altura do botão */
+    width: 60px;
+    height: 60px;
     border: none;
-    border-radius: 8px;
-    background-size: contain; /* Ajusta o tamanho da imagem ao botão */
-    background-repeat: no-repeat; /* Evita repetição da imagem */
-    background-position: center; /* Centraliza a imagem */
+    border-radius: 12px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     cursor: pointer;
-    transition: transform 0.2s ease; /* Animação ao passar o mouse */
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    background-color: #ff9a9e;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-/* Efeito ao passar o mouse */
 button:hover {
-    transform: scale(1.1); /* Aumenta o botão levemente */
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    background-color: #fad0c4; 
 }
 
-/* Estilo do botão selecionado */
 button.selected {
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.8); /* Destaque azul */
+    box-shadow: 0 0 15px rgba(255, 214, 10, 0.8); 
+    border: 2px solid rgba(255, 214, 10, 0.8);
 }
 
-/* Botões específicos com imagens */
 button.cube {
-    background-image: url('https://www.pngfind.com/pngs/m/179-1790052_570-x-599-10-white-3d-cube-png.png');
+    background-image: url('../images/cubo-remove.png');
 }
 
 button.sphere {
-    background-image: url('https://p7.hiclipart.com/preview/645/904/905/sphere-three-dimensional-space-drawing-grey-wallpaper.jpg');
+    background-image: url('../images/esfera-remove.png');
 }
 
 button.cylinder {
-    background-image: url('https://www.nicepng.com/png/detail/23-238447_3d-cylinder-png.png');
+    background-image: url('../images/cilindro-remove.png');
 }
 
-/* Estilo do seletor de cor */
 #colorPicker {
     width: 40px;
     height: 40px;
     border: none;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #42a5f5, #478ed1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+#colorPicker:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, #478ed1, #42a5f5); 
 }
