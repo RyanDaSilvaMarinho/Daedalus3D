@@ -1,52 +1,61 @@
-div {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 100;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    padding: 15px;
-    border-radius: 12px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #ff9a9e;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb);
     display: flex;
-    gap: 10px;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    flex-direction: column;
+    overflow: hidden;
 }
 
-button {
-    width: 60px;
-    height: 60px;
-    border: none;
-    border-radius: 12px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+#header {
+    background-color: #ec407a;
+    color: #fff;
+    padding: 0 20px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+#header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+#header nav ul li {
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-    background-color: #ff9a9e;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    background-color: #fad0c4; 
+#main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
 }
 
-button.selected {
-    box-shadow: 0 0 15px rgba(255, 214, 10, 0.8); 
-    border: 2px solid rgba(255, 214, 10, 0.8);
+#toolbar-left {
+    background-color: #f0f0f0;
+    width: 80px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    border-right: 1px solid #ccc;
 }
 
-button.cube {
-    background-image: url('../images/cubo-remove.png');
-}
-
-button.sphere {
-    background-image: url('../images/esfera-remove.png');
-}
-
-button.cylinder {
-    background-image: url('../images/cilindro-remove.png');
+#controls {
+    position: relative;
 }
 
 #colorPicker {
@@ -63,5 +72,99 @@ button.cylinder {
 #colorPicker:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-    background: linear-gradient(135deg, #478ed1, #42a5f5); 
+    background: linear-gradient(135deg, #478ed1, #42a5f5);
+}
+
+#object-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#object-buttons button {
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 12px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    background-color: #ff9a9e;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#object-buttons button:hover {
+    transform: scale(1.1) rotate(3deg);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    background-color: #fad0c4;
+}
+
+#object-buttons button.selected {
+    box-shadow: 0 0 15px rgba(255, 214, 10, 0.8);
+    border: 2px solid rgba(255, 214, 10, 0.8);
+}
+
+#object-buttons button:focus {
+    outline: 3px solid #ffd60a;
+}
+
+#drawing-area {
+    flex: 1;
+    background-color: transparent;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#side-panel {
+    background-color: #f9f9f9;
+    width: 300px;
+    padding: 10px;
+    border-left: 1px solid #ccc;
+}
+
+#footer {
+    background-color: #ec407a;
+    color: #fff;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+#chat-container {
+    position: fixed;
+    top: 50%;
+    left: calc(100% - 300px);
+    width: 300px;
+    max-width: 300px;
+    background-color: #fce4ec;
+    border: 1px solid #ce93d8;
+    box-shadow: -2px 0 6px rgba(0, 0, 0, 0.2);
+    transition: none;
+    display: flex;
+    flex-direction: column;
+}
+
+#chat-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px;
+}
+
+#send-button {
+    background-color: #ec407a;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#send-button:hover {
+    background-color: #d81b60;
 }

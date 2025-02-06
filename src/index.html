@@ -1,27 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tiles</title>
-    <link rel="stylesheet" href="./css/styles.css">
-    <style>
-        body {
-        margin: 0;
-        height: 100vh;
-        background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb);
-        overflow: hidden;
-    }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+        content="Página interativa de tiles com visual 3D usando Three.js e chat futuramente integrado.">
+    <title>Tiles com Chat</title>
+    <link rel="stylesheet" href="Daedalus3D-main\Daedalus3D-main\public\assets\styles\styles.css">
 </head>
-<body>
-    <!-- Container para os botões -->
-    <div id="controls">
-        <input type="color" id="colorPicker" value="#ff0000" title="Escolha a cor">
-    </div>
 
-    <!-- Script principal como módulo -->
+<body>
+    <header id="header">
+        <nav>
+            <ul>
+                <li>File</li>
+                <li>Edit</li>
+                <li>View</li>
+                <li>Window</li>
+                <li>Help</li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main">
+        <aside id="toolbar-left">
+            <div id="controls">
+                <input type="color" id="colorPicker" value="#ff0000" title="Escolha a cor" aria-label="Seletor de cor">
+            </div>
+            <div id="object-buttons">
+                <button class="cube selected" data-type="cube"
+                    style="background-image: url('https://www.pngfind.com/pngs/m/179-1790052_570-x-599-10-white-3d-cube-png.png');"></button>
+                <button class="sphere" data-type="sphere"
+                    style="background-image: url('https://p7.hiclipart.com/preview/645/904/905/sphere-three-dimensional-space-drawing-grey-wallpaper.jpg');"></button>
+                <button class="cylinder" data-type="cylinder"
+                    style="background-image: url('https://www.nicepng.com/png/detail/23-238447_3d-cylinder-png.png');"></button>
+            </div>
+        </aside>
+
+        <section id="drawing-area">
+        </section>
+
+        <aside id="side-panel">
+            <p>Painel Lateral</p>
+        </aside>
+    </main>
+
+    <footer id="footer">
+        <p>Rodapé</p>
+    </footer>
+
+    <div id="chat-container" class="collapsed">
+        <div id="chat-body">
+          <textarea id="chat-input" placeholder="Digite sua mensagem..."></textarea>
+        </div>
+        <div id="chat-footer">
+            <button id="send-button">Enviar</button>
+          </div>
+      </div>
+
     <script type="module" src="./js/scripts.js"></script>
 </body>
+
 </html>
