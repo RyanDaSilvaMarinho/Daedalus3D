@@ -1,65 +1,64 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description"
-        content="Página interativa de tiles com visual 3D usando Three.js e chat futuramente integrado.">
-    <title>Tiles com Chat</title>
-    <link rel="stylesheet" href="Daedalus3D-main\Daedalus3D-main\public\assets\styles\styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daedalus 3D Editor</title>
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
-
 <body>
-    <header id="header">
-        <nav>
-            <ul>
-                <li>File</li>
-                <li>Edit</li>
-                <li>View</li>
-                <li>Window</li>
-                <li>Help</li>
-            </ul>
-        </nav>
-    </header>
-
-    <main id="main">
-        <aside id="toolbar-left">
-            <div id="controls">
-                <input type="color" id="colorPicker" value="#ff0000" title="Escolha a cor" aria-label="Seletor de cor">
+    <div class="app-container">
+        <div class="header">
+            <div class="menu">
+                <a href="#" class="menu-item">Arquivo</a>
+                <a href="#" class="menu-item">Editar</a>
             </div>
-            <div id="object-buttons">
-                <button class="cube selected" data-type="cube"
-                    style="background-image: url('https://www.pngfind.com/pngs/m/179-1790052_570-x-599-10-white-3d-cube-png.png');"></button>
-                <button class="sphere" data-type="sphere"
-                    style="background-image: url('https://p7.hiclipart.com/preview/645/904/905/sphere-three-dimensional-space-drawing-grey-wallpaper.jpg');"></button>
-                <button class="cylinder" data-type="cylinder"
-                    style="background-image: url('https://www.nicepng.com/png/detail/23-238447_3d-cylinder-png.png');"></button>
+            <div class="logo">Daedalus</div>
+            <div class="user-info">
+                <span>Bem vindo, Nome Sobrenome</span>
             </div>
-        </aside>
-
-        <section id="drawing-area">
-        </section>
-
-        <aside id="side-panel">
-            <p>Painel Lateral</p>
-        </aside>
-    </main>
-
-    <footer id="footer">
-        <p>Rodapé</p>
-    </footer>
-
-    <div id="chat-container" class="collapsed">
-        <div id="chat-body">
-          <textarea id="chat-input" placeholder="Digite sua mensagem..."></textarea>
         </div>
-        <div id="chat-footer">
-            <button id="send-button">Enviar</button>
-          </div>
-      </div>
 
+        <div class="timeline">
+            <span>0</span>
+            <div class="timeline-mark"></div>
+            <span>100</span>
+            <div class="timeline-mark"></div>
+            <span>200</span>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <button class="tool-button" data-tooltip="Reproduzir">▶</button>
+                <button class="tool-button" data-tooltip="Áudio">🔊</button>
+                <button class="tool-button" data-tooltip="Zoom">🔍</button>
+                <button class="tool-button" data-tooltip="Adicionar">➕</button>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="canvas"></canvas>
+                <div class="projects-bar">
+                    <button class="project-tab active">Projeto 1</button>
+                    <button class="project-tab">Projeto 2</button>
+                    <button class="project-tab">Projeto 3</button>
+                    <button class="project-tab">+</button>
+                </div>
+            </div>
+
+            <div class="properties-panel">
+                <div class="properties-card">
+                    <h3>Texto para 3D</h3>
+                    <textarea id="text-input" placeholder="Digite seu texto aqui...">Lorem ipsum is simply dummy text of the printing and typesetting industry.</textarea>
+                    <button class="generate-button" id="generate-text-3d">Gerar</button>
+                </div>
+                <div class="properties-card">
+                    <h3>Imagem para 3D</h3>
+                    <input type="file" id="image-input" accept="image/*" class="file-input">
+                    <button class="generate-button" id="generate-image-3d">Converter</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="module" src="./js/scripts.js"></script>
 </body>
-
 </html>
